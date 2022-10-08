@@ -4,18 +4,18 @@ import {
   drawParticles,
   calculateTotalEnergy,
 } from "./utils.js";
-import interactParticles from "./interactParticles.js";
+import models from "./models/index.js";
 
 const particles = [
   ...createNparticles(10, { color: "red", mass: 10 }),
   ...createNparticles(5, { color: "white", mass: 100 }),
   ...createNparticles(1, { color: "blue", mass: 1000 }),
 ];
-const initialEnergy = calculateTotalEnergy(particles);
+console.log(particles);
 
 const update = (shouldRequestAnimationFrame) => {
   fadeCanvas();
-  interactParticles({ particles, initialEnergy });
+  models.model1(particles);
   drawParticles(particles);
   if (shouldRequestAnimationFrame) {
     requestAnimationFrame(update);

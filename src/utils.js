@@ -1,5 +1,5 @@
 import { canvasSize, canvasContext } from "./constants";
-import { density, backgroundColor, maxInitialVelocity } from "./variables";
+import { density, backgroundColor } from "./variables";
 
 export const calculateTotalEnergy = (particles) => {
   let totalEnergy = 0;
@@ -28,9 +28,9 @@ const randomIntBetween = (min, max) => Math.floor(randomFloatBetween(min, max));
 export const createParticle = (arg = {}) => {
   const {
     color = `hwb(${randomIntBetween(0, 360)}deg 0% 0%)`,
-    mass = randomFloatBetween(4, 6),
-    vx = randomFloatBetween(-maxInitialVelocity, maxInitialVelocity),
-    vy = randomFloatBetween(-1, 1),
+    mass = randomFloatBetween(10, 500),
+    vx = randomFloatBetween(-0.001, 0.001),
+    vy = randomFloatBetween(-0.001, 0.001),
     x = randomIntBetween(0, canvasSize),
     y = randomIntBetween(0, canvasSize),
   } = arg;

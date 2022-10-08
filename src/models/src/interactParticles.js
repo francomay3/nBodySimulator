@@ -1,12 +1,12 @@
-import { canvasSize } from "./constants";
-import { calculateTotalEnergy } from "./utils";
-import { gravity } from "./variables";
+import { canvasSize } from "../../constants";
+import { calculateTotalEnergy } from "../../utils";
+import { initialEnergy, drag, wallDamping, gravity } from "../../variables";
 
-export default function interactParticles({ particles, initialEnergy }) {
+export const model1 = (particles) => {
   particles.forEach((a) => {
     const currentEnergy = calculateTotalEnergy(particles);
-    const energyRatio = currentEnergy / initialEnergy;
-    console.log(energyRatio);
+    let energyRatio = currentEnergy / initialEnergy;
+    energyRatio = energyRatio ? energyRatio : 0.0001;
 
     particles.forEach((b) => {
       if (a === b) {
@@ -28,28 +28,28 @@ export default function interactParticles({ particles, initialEnergy }) {
       const fy = force * Math.sin(angle);
       a.vx += fx / energyRatio / a.mass;
       a.vy += fy / energyRatio / a.mass;
+      a.vx *= 1 - drag;
+      a.vy *= 1 - drag;
       a.x += a.vx;
       a.y += a.vy;
 
-      const damping = 0;
-
       if (a.x > canvasSize) {
-        a.vx = -a.vx * damping;
-        a.x = canvasSize;
+        a.vx *= -1 * wallDamping;
+        a.x = canvasSize - 1;
       }
       if (a.x < 0) {
-        a.vx = -a.vx * damping;
-        a.x = 0;
+        a.vx *= -1 * wallDamping;
+        a.x = 1;
       }
 
       if (a.y > canvasSize) {
-        a.vy = -a.vy * damping;
-        a.y = canvasSize;
+        a.vy *= -1 * wallDamping;
+        a.y = canvasSize - 1;
       }
       if (a.y < 0) {
-        a.vy = -a.vy * damping;
-        a.y = 0;
+        a.vy *= -1 * wallDamping;
+        a.y = 1;
       }
     });
   });
-}
+};
