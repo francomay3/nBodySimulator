@@ -1,5 +1,5 @@
 export const backgroundColor = "hwb(0deg 0% 100% / 10%)";
-export const density = 10;
+export const density = 100;
 export const gravity = 2;
 export const initialEnergy = 0.05;
 export const wallDamping = 1;

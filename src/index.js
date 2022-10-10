@@ -7,15 +7,14 @@ import {
 import models from "./models/index.js";
 
 const particles = [
-  ...createNparticles(10, { color: "red", mass: 10 }),
-  ...createNparticles(5, { color: "white", mass: 100 }),
-  ...createNparticles(1, { color: "blue", mass: 1000 }),
+  ...createNparticles(500, {
+    color: "red",
+    mass: 0.1,
+  }),
 ];
-console.log(particles);
-
 const update = (shouldRequestAnimationFrame) => {
   fadeCanvas();
-  models.model1(particles);
+  models.model2(particles);
   drawParticles(particles);
   if (shouldRequestAnimationFrame) {
     requestAnimationFrame(update);

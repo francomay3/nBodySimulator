@@ -29,8 +29,8 @@ export const createParticle = (arg = {}) => {
   const {
     color = `hwb(${randomIntBetween(0, 360)}deg 0% 0%)`,
     mass = randomFloatBetween(10, 500),
-    vx = randomFloatBetween(-0.001, 0.001),
-    vy = randomFloatBetween(-0.001, 0.001),
+    vx = randomFloatBetween(-0.015, 0.015),
+    vy = randomFloatBetween(-0.015, 0.015),
     x = randomIntBetween(0, canvasSize),
     y = randomIntBetween(0, canvasSize),
   } = arg;
