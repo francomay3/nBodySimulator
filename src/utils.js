@@ -1,5 +1,4 @@
 import { canvasSize, canvasContext } from "./constants";
-import { density, backgroundColor } from "./variables";
 
 export const calculateTotalEnergy = (particles) => {
   let totalEnergy = 0;
@@ -26,7 +25,7 @@ const randomFloatBetween = (min, max) => Math.random() * (max - min) + min;
 const randomIntBetween = (min, max) => Math.floor(randomFloatBetween(min, max));
 
 export const createParticle = (arg = {}) => {
-  const {
+  let {
     color = `hwb(${randomIntBetween(0, 360)}deg 0% 0%)`,
     mass = randomFloatBetween(10, 500),
     vx = randomFloatBetween(-0.015, 0.015),
@@ -34,7 +33,20 @@ export const createParticle = (arg = {}) => {
     x = randomIntBetween(0, canvasSize),
     y = randomIntBetween(0, canvasSize),
   } = arg;
-  const radius = Math.sqrt((mass * density) / Math.PI);
+  if (typeof vx === "function") {
+    vx = vx();
+  }
+  if (typeof vy === "function") {
+    vy = vy();
+  }
+  if (typeof x === "function") {
+    x = x();
+  }
+  if (typeof y === "function") {
+    y = y();
+  }
+
+  const radius = Math.sqrt((mass * 100) / Math.PI);
   return { color, mass, vx, vy, x, y, radius };
 };
 
@@ -43,6 +55,7 @@ export const createNparticles = (n, options) => {
   for (let i = 0; i < n; i++) {
     particles.push(createParticle(options));
   }
+  console.log(particles);
   return particles;
 };
 
@@ -53,5 +66,5 @@ export const drawParticles = (particles) => {
 };
 
 export const fadeCanvas = () => {
-  draw(0, 0, backgroundColor, canvasSize);
+  draw(0, 0, "hwb(0deg 0% 100% / 10%)", canvasSize);
 };

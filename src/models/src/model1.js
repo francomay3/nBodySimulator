@@ -1,6 +1,12 @@
 import { canvasSize } from "../../constants";
 import { calculateTotalEnergy } from "../../utils";
-import { initialEnergy, drag, wallDamping, gravity } from "../../variables";
+
+export const backgroundColor = "hwb(0deg 0% 100% / 10%)";
+export const density = 100;
+export const gravity = 2;
+export const initialEnergy = 0.05;
+export const wallDamping = 1;
+export const drag = 0;
 
 export const model1 = (particles) => {
   particles.forEach((a) => {
@@ -32,6 +38,13 @@ export const model1 = (particles) => {
       a.vy *= 1 - drag;
       a.x += a.vx;
       a.y += a.vy;
+      const speedLimit = 0.02;
+      if (a.vx > speedLimit) {
+        a.vx = speedLimit;
+      }
+      if (a.vy > speedLimit) {
+        a.vy = speedLimit;
+      }
 
       if (a.x > canvasSize) {
         a.vx *= -1 * wallDamping;

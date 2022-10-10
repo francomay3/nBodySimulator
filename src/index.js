@@ -1,15 +1,31 @@
-import {
-  fadeCanvas,
-  createNparticles,
-  drawParticles,
-  calculateTotalEnergy,
-} from "./utils.js";
+import { fadeCanvas, createNparticles, drawParticles } from "./utils.js";
 import models from "./models/index.js";
 
+const bias = 0.2;
 const particles = [
-  ...createNparticles(500, {
-    color: "red",
-    mass: 0.1,
+  ...createNparticles(330, {
+    mass: 0.01,
+    x: () => Math.random() * 300 + 300,
+    y: () => Math.random() * 300,
+    vx: () => (Math.random() - 0.5 + bias) * 0.01,
+  }),
+  ...createNparticles(330, {
+    mass: 0.01,
+    x: () => Math.random() * 300 + 300,
+    y: () => Math.random() * 300 + 600,
+    vx: () => (Math.random() - 0.5 - bias) * 0.01,
+  }),
+  ...createNparticles(330, {
+    mass: 0.01,
+    x: () => Math.random() * 300,
+    y: () => Math.random() * 300 + 300,
+    vy: () => (Math.random() - 0.5 - bias) * 0.01,
+  }),
+  ...createNparticles(330, {
+    mass: 0.01,
+    x: () => Math.random() * 300 + 600,
+    y: () => Math.random() * 300 + 300,
+    vy: () => (Math.random() - 0.5 + bias) * 0.01,
   }),
 ];
 const update = (shouldRequestAnimationFrame) => {

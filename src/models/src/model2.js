@@ -1,10 +1,9 @@
 import { canvasSize } from "../../constants";
-import { calculateTotalEnergy } from "../../utils";
-import { density } from "../../variables";
+
+export const density = 100;
+const gravity = 0.3;
 
 export const model2 = (particles) => {
-  const gravity = 0.3;
-
   const allCombinations = [];
   particles.forEach((a) => {
     particles.forEach((b) => {
@@ -38,5 +37,24 @@ export const model2 = (particles) => {
     a.vy += ay / a.mass;
     a.x += a.vx;
     a.y += a.vy;
+
+    const limit = 200;
+
+    if (a.x < -limit) {
+      a.x = -limit;
+      a.vx = -a.vx;
+    }
+    if (a.x > canvasSize + limit) {
+      a.x = canvasSize + limit;
+      a.vx = -a.vx;
+    }
+    if (a.y < -limit) {
+      a.y = -limit;
+      a.vy = -a.vy;
+    }
+    if (a.y > canvasSize + limit) {
+      a.y = canvasSize + limit;
+      a.vy = -a.vy;
+    }
   });
 };
