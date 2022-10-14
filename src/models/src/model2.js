@@ -19,18 +19,27 @@ export const model2 = (particles) => {
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     if (distance < a.radius + b.radius) {
-      a.vx = (a.vx * a.mass + b.vx * b.mass) / (a.mass + b.mass);
-      a.vy = (a.vy * a.mass + b.vy * b.mass) / (a.mass + b.mass);
-      a.x = (a.x * a.mass + b.x * b.mass) / (a.mass + b.mass);
-      a.y = (a.y * a.mass + b.y * b.mass) / (a.mass + b.mass);
+      const proportional = (prop) =>
+        (a[prop] * a.mass + b[prop] * b.mass) / (a.mass + b.mass);
+      a.vx = proportional("vx");
+      a.vy = proportional("vy");
+      a.x = proportional("x");
+      a.y = proportional("y");
       a.mass += b.mass;
       a.radius = Math.sqrt((a.mass * density) / Math.PI);
       b.mass = 0;
       b.x = -1000;
       b.y = -1000;
+      console.log("3", particles);
       return;
     }
-    const force = (gravity * a.mass * b.mass) / (distance * distance);
+    const forces = (times) => (gravity * a.mass * b.mass) / distance ** times;
+    const experimentalForce3 =
+      gravity *
+      a.mass *
+      b.mass *
+      ((Math.sin(distance ** 2 - 0.6) + 0.1 * distance) / distance ** 2);
+    const force = forces(2);
     const ax = (dx / distance) * force;
     const ay = (dy / distance) * force;
     a.vx += ax / a.mass;
@@ -38,7 +47,7 @@ export const model2 = (particles) => {
     a.x += a.vx;
     a.y += a.vy;
 
-    const limit = 200;
+    const limit = 0;
 
     if (a.x < -limit) {
       a.x = -limit;

@@ -28,8 +28,8 @@ export const createParticle = (arg = {}) => {
   let {
     color = `hwb(${randomIntBetween(0, 360)}deg 0% 0%)`,
     mass = randomFloatBetween(10, 500),
-    vx = randomFloatBetween(-0.015, 0.015),
-    vy = randomFloatBetween(-0.015, 0.015),
+    vx,
+    vy,
     x = randomIntBetween(0, canvasSize),
     y = randomIntBetween(0, canvasSize),
   } = arg;
@@ -45,6 +45,12 @@ export const createParticle = (arg = {}) => {
   if (typeof y === "function") {
     y = y();
   }
+  if (vx === undefined) {
+    vx = randomFloatBetween(-0.015, 0.015);
+  }
+  if (vy === undefined) {
+    vy = randomFloatBetween(-0.015, 0.015);
+  }
 
   const radius = Math.sqrt((mass * 100) / Math.PI);
   return { color, mass, vx, vy, x, y, radius };
@@ -55,7 +61,6 @@ export const createNparticles = (n, options) => {
   for (let i = 0; i < n; i++) {
     particles.push(createParticle(options));
   }
-  console.log(particles);
   return particles;
 };
 
