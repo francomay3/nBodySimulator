@@ -4,7 +4,3 @@
 html, body {
     margin: 0;
 }
-#canvas{
-    width: min(100vh, 100vw);
-    aspect-ratio: 1/1;
-}

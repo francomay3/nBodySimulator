@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Document</title></head><body><canvas id="life" width="500" height="500"></canvas></body></html>
+const libros = [libro1, libro2];
+<script>
+    const m=document.getElementById("life").getContext("2d");
+    const draw = (x,y,c,s)=>{
+        m.fillStyle=c;
+        m.fillRect(x,y,s,s);
+    }
+    let particles = [];
+    const particle = (x,y,color,vx,vy, mass)=>{
+        return {x,y,vx,vy,color, mass}
+    }
+    const random = ()=>{
+        return Math.random()*500;
+    }
+    const create = (
+            number,
+            color,
+            pos={x:Math.random()*500,y:Math.random()*500},
+            vel={vx:(Math.random()-0.5),vy:(Math.random()-0.5)},
+            mass=1,
+        )=>{
+        const group = [];
+        for(let i=0;i<number;i++){
+            group.push(particle(pos.x, pos.y, color, vel.vx, vel.vy, mass));
+            particles.push(group[i]);
+        }
+        return group;
+    }
+
+
+    const rule = (particles1,particles2,g)=>{
+        for (let i=0;i<particles1.length;i++){
+            
+            let fx=0;
+            let fy=0;
+        
+            for (let j=0;j<particles2.length;j++){
+                
+                let a = particles1[i];
+                let b = particles2[j];
+                
+                const dx = a.x - b.x;
+                const dy = a.y - b.y;
+                const d = Math.sqrt(dx*dx+dy*dy);
+                const drag = 0.0001;
+                
+                if (d>0){
+                    const F = g*(1/d);
+                    fx += (F*dx);
+                    fy += (F*dy);
+                }
+                a.vx = (a.vx+fx)-a.vx*drag;
+                a.vy = (a.vy+fy)-a.vy*drag;
+                a.x += a.vx;
+                a.y += a.vy;
+                if(a.x<0){
+                    a.x=1;
+                    a.vx=-a.vx*0.5;
+                }
+                if(a.x>500){
+                    a.x=499;
+                    a.vx=-a.vx*0.5;
+                }
+                if(a.y<0){
+                    a.y=1;
+                    a.vy=-a.vy*0.5;
+                }
+                if(a.y>500){
+                    a.y=499;
+                    a.vy=-a.vy*0.5;
+                }
+                
+
+            }
+        }
+    }
+
+    const calculateTotalEnergy = (particles)=>{
+        const dimensions = particles.reduce((acc,curr)=>{
+            acc.vx=acc.vx+curr.vx;
+            acc.vy=acc.vy+curr.vy;
+            return acc;
+        },{vx:0,vy:0});
+        const energy = Math.sqrt(dimensions.vx*dimensions.vx+dimensions.vy*dimensions.vy);
+        return energy;
+    }
+        
+const yellow = create(10,"yellow");
+const blue = create(10,"blue");
+
+const all = [...yellow];
+
+    const update = ()=>{
+        rule(all,all,-.001);
+        rule(yellow,blue,.001);
+        calculateTotalEnergy(all);
+        m.clearRect(0,0,500,500);
+        draw(0,0,"black",500);
+        for(let i=0;i<particles.length;i++){
+            draw(particles[i].x, particles[i].y, particles[i].color, 5);
+        }
+        requestAnimationFrame(update);
+    }
+
+    update();
+</script>

@@ -11,15 +11,15 @@ export const calculateTotalEnergy = (particles) => {
 };
 
 const drawParticle = (x, y, radius, color) => {
-  canvasContext.beginPath();
-  canvasContext.arc(x, y, radius, 0, Math.PI * 2);
-  canvasContext.fillStyle = color;
-  canvasContext.fill();
+  window.canvasCtx.beginPath();
+  window.canvasCtx.arc(x, y, radius, 0, Math.PI * 2);
+  window.canvasCtx.fillStyle = color;
+  window.canvasCtx.fill();
 };
 
 const draw = (x, y, color, s) => {
-  canvasContext.fillStyle = color;
-  canvasContext.fillRect(x, y, s, s);
+  window.canvasCtx.fillStyle = color;
+  window.canvasCtx.fillRect(x, y, s, s);
 };
 const randomFloatBetween = (min, max) => Math.random() * (max - min) + min;
 const randomIntBetween = (min, max) => Math.floor(randomFloatBetween(min, max));

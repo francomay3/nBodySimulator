@@ -1,6 +1,6 @@
-const canvas = document.querySelector("#canvas");
-export const canvasContext = canvas.getContext("2d");
+const getCanvas = () => window.appVars?.canvas ?? null;
+export const canvasContext = getCanvas()?.getContext("2d");
 export const canvasSize = 1000;
 
-canvas.setAttribute("width", canvasSize);
-canvas.setAttribute("height", canvasSize);
+getCanvas()?.setAttribute("width", canvasSize);
+getCanvas()?.setAttribute("height", canvasSize);
