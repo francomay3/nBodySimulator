@@ -1,4 +1,11 @@
-import { canvasSize, canvasContext } from "./constants";
+import { canvasSize } from "./constants";
+
+export const getCombinations = (arr) =>
+  arr.reduce((acc, item, i) => {
+    const rest = arr.slice(i + 1);
+    const pairs = rest.map((item2) => [item, item2]);
+    return [...acc, ...pairs];
+  }, []);
 
 export const calculateTotalEnergy = (particles) => {
   let totalEnergy = 0;
@@ -10,63 +17,72 @@ export const calculateTotalEnergy = (particles) => {
   return totalEnergy;
 };
 
-const drawParticle = (x, y, radius, color) => {
-  window.canvasCtx.beginPath();
-  window.canvasCtx.arc(x, y, radius, 0, Math.PI * 2);
-  window.canvasCtx.fillStyle = color;
-  window.canvasCtx.fill();
+const drawParticle = (x, y, radius, color, canvas) => {
+  const ctx = canvas.getContext("2d");
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
 };
 
-const draw = (x, y, color, s) => {
-  window.canvasCtx.fillStyle = color;
-  window.canvasCtx.fillRect(x, y, s, s);
+const draw = (x, y, color, s, canvas) => {
+  canvas.fillStyle = color;
+  canvas.fillRect(x, y, s, s);
 };
 const randomFloatBetween = (min, max) => Math.random() * (max - min) + min;
 const randomIntBetween = (min, max) => Math.floor(randomFloatBetween(min, max));
 
 export const createParticle = (arg = {}) => {
-  let {
+  const getV = (vArg) => {
+    if (typeof vArg === "number") {
+      return vArg;
+    }
+    if (typeof vArg === "function") {
+      return vArg();
+    }
+    return randomFloatBetween(-0.015, 0.015);
+  };
+  const getPos = (posArg) => {
+    if (typeof posArg === "number") {
+      return posArg;
+    }
+    if (typeof posArg === "function") {
+      return posArg();
+    }
+    return randomFloatBetween(0, canvasSize);
+  };
+  const {
     color = `hwb(${randomIntBetween(0, 360)}deg 0% 0%)`,
-    mass = randomFloatBetween(10, 500),
+    mass = randomFloatBetween(1, 10),
     vx,
     vy,
-    x = randomIntBetween(0, canvasSize),
-    y = randomIntBetween(0, canvasSize),
+    x,
+    y,
   } = arg;
-  if (typeof vx === "function") {
-    vx = vx();
-  }
-  if (typeof vy === "function") {
-    vy = vy();
-  }
-  if (typeof x === "function") {
-    x = x();
-  }
-  if (typeof y === "function") {
-    y = y();
-  }
-  if (vx === undefined) {
-    vx = randomFloatBetween(-0.015, 0.015);
-  }
-  if (vy === undefined) {
-    vy = randomFloatBetween(-0.015, 0.015);
-  }
 
-  const radius = Math.sqrt((mass * 100) / Math.PI);
-  return { color, mass, vx, vy, x, y, radius };
+  const radius = Math.sqrt(mass / Math.PI);
+  return {
+    color,
+    mass,
+    vx: getV(vx),
+    vy: getV(vy),
+    x: getPos(x),
+    y: getPos(y),
+    radius,
+  };
 };
 
 export const createNparticles = (n, options) => {
-  const particles = [];
-  for (let i = 0; i < n; i++) {
-    particles.push(createParticle(options));
-  }
-  return particles;
+  const retVal = Array(n)
+    .fill("")
+    .map(() => createParticle(options));
+
+  return retVal;
 };
 
-export const drawParticles = (particles) => {
+export const drawParticles = (particles, canvas) => {
   particles.forEach(({ x, y, radius, color }) => {
-    drawParticle(x, y, radius, color);
+    drawParticle(x, y, radius, color, canvas);
   });
 };
 

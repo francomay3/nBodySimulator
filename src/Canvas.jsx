@@ -1,66 +1,43 @@
-import React, { useRef, useEffect } from "react";
-import { createNparticles, drawParticles } from "./utils";
+import React, { useRef, useEffect, useMemo } from "react";
+import { drawParticles } from "./utils";
 import models from "./models";
 import styled from "styled-components";
-
-const run = (canvas) => {
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  window.canvasCtx = canvas.getContext("2d");
-
-  const particles2 = [
-    ...createNparticles(1, {
-      mass: 100,
-      color: "white",
-      vx: 0,
-      vy: 0,
-      y: 500,
-      x: 400,
-    }),
-    ...createNparticles(1, {
-      mass: 5,
-      color: "blue",
-      vx: 0,
-      vy: 0,
-      y: 500,
-      x: 200,
-    }),
-  ];
-
-  const draw = (x, y, color, s) => {
-    ctx.fillStyle = color;
-    ctx.fillRect(x, y, s, s);
-  };
-
-  const fadeCanvas = () => {
-    draw(0, 0, "hwb(0deg 0% 100% / 10%)", 1000);
-  };
-
-  const update = () => {
-    fadeCanvas();
-    models.model2(particles2);
-    drawParticles(particles2);
-    requestAnimationFrame(update);
-  };
-
-  update();
-};
+import { canvasSize } from "./constants";
+import { createNparticles } from "./utils";
+import useWorld from "./useWorld";
 
 const CanvasElm = styled.canvas`
   width: 100%;
 `;
 
-const Canvas = () => {
+const Canvas = ({ frames, model }) => {
   const canvasElement = useRef(null);
+  const world = useWorld({
+    canvas: null,
+    model,
+    frames,
+    particles: createNparticles(10),
+    canvasSize: 1000,
+  });
   useEffect(() => {
     if (canvasElement) {
-      run(canvasElement.current);
+      world.setCanvas(canvasElement.current);
+      world.play();
     }
   }, [canvasElement]);
 
+  useEffect(() => {
+    world.setFrames(frames);
+  }, [frames]);
+
   return (
     <div>
-      <CanvasElm ref={canvasElement} id="canvas" height="1000" width="1000" />
+      <CanvasElm
+        ref={canvasElement}
+        id="canvas"
+        height={canvasSize}
+        width={canvasSize}
+      />
     </div>
   );
 };

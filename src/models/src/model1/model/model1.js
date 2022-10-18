@@ -1,14 +1,10 @@
-import { canvasSize } from "../../constants";
-import { calculateTotalEnergy } from "../../utils";
+import { canvasSize } from "../../../../constants";
+import { calculateTotalEnergy } from "../../../../utils";
+import controls from "../controls/controls";
 
-export const backgroundColor = "hwb(0deg 0% 100% / 10%)";
-export const density = 100;
-export const gravity = 2;
-export const initialEnergy = 0.05;
-export const wallDamping = 1;
-export const drag = 0;
+const { gravity, initialEnergy, wallDamping, drag } = controls;
 
-export const model1 = (particles) => {
+export default (particles) => {
   particles.forEach((a) => {
     const currentEnergy = calculateTotalEnergy(particles);
     let energyRatio = currentEnergy / initialEnergy;

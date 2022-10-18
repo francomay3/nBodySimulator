@@ -3,6 +3,9 @@ const path = require("path");
 module.exports = {
   mode: "development",
   entry: "./src/index.js",
+  optimization: {
+    minimize: false,
+  },
   watchOptions: {
     ignored: /node_modules/,
   },

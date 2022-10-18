@@ -70,7 +70,6 @@ const update = (shouldRequestAnimationFrame) => {
 };
 
 export const run = (time) => {
-  console.log("running!");
   if (!time) {
     return update(true);
   }
