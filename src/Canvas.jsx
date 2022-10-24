@@ -10,7 +10,7 @@ const CanvasElm = styled.canvas`
   width: 100%;
 `;
 
-const Canvas = ({ frames, model }) => {
+const Canvas = ({ frames, model, controls }) => {
   const canvasElement = useRef(null);
   const world = useWorld({
     canvas: null,
@@ -18,6 +18,7 @@ const Canvas = ({ frames, model }) => {
     frames,
     particles: createNparticles(10),
     canvasSize: 1000,
+    controls,
   });
   useEffect(() => {
     if (canvasElement) {

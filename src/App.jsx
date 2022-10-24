@@ -15,14 +15,15 @@ const App = () => {
   const modelsNames = Object.keys(models);
   const [frames, setFrames] = useState(10);
   const [model, setModel] = useState(modelsNames[1]);
-  console.log(models);
+  const [controls, setControls] = useState(models[model].controls);
   return (
     <AppWrapper>
-      <Canvas frames={frames} model={model} />
+      <Canvas frames={frames} model={model} controls={controls} />
       <Controls
         frames={frames}
         setFrames={setFrames}
-        controls={models[model].controls}
+        controls={controls}
+        setControls={setControls}
       />
     </AppWrapper>
   );

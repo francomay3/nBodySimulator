@@ -8,9 +8,10 @@ export default ({
   particles: particlesArg,
   frames: framesArg,
   canvasSize: canvasSizeArg,
+  controls: controlsArg,
 }) => {
   const model = useRef(modelArg);
-  const controls = useRef(models[model.current].controls);
+  const controls = useRef(controlsArg);
   const canvas = useRef(canvasArg);
   const particles = useRef(particlesArg);
   const frames = useRef(framesArg);
@@ -32,7 +33,7 @@ export default ({
 
     const update = () => {
       fadeCanvas();
-      models[model.current](particles.current, controls.current);
+      models[model.current].model(particles.current, controls.current);
       drawParticles(particles.current, canvas.current);
       if (frames.current) {
         requestAnimationFrame(update);
