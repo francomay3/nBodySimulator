@@ -14,7 +14,7 @@ const AppWrapper = styled.div`
 const App = () => {
   const modelsNames = Object.keys(models);
   const [frames, setFrames] = useState(10);
-  const [model, setModel] = useState(modelsNames[1]);
+  const [model, setModel] = useState(modelsNames[2]);
   const [controls, setControls] = useState(models[model].controls);
   return (
     <AppWrapper>
@@ -24,6 +24,9 @@ const App = () => {
         setFrames={setFrames}
         controls={controls}
         setControls={setControls}
+        modelsNames={modelsNames}
+        setModel={setModel}
+        currentModel={model}
       />
     </AppWrapper>
   );

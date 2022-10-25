@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo, useCallback } from "react";
+import { useRef } from "react";
 import models from "./models";
 import { drawParticles } from "./utils";
 
@@ -20,6 +20,7 @@ export default ({
 
   const play = () => {
     if (stopped.current) return;
+    console.log(canvas);
     const ctx = canvas.current.getContext("2d");
 
     const draw = (x, y, color, s) => {
@@ -33,7 +34,11 @@ export default ({
 
     const update = () => {
       fadeCanvas();
-      models[model.current].model(particles.current, controls.current);
+      models[model.current].model(
+        particles.current,
+        controls.current,
+        canvas.current
+      );
       drawParticles(particles.current, canvas.current);
       if (frames.current) {
         requestAnimationFrame(update);
